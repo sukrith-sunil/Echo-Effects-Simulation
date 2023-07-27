@@ -113,4 +113,11 @@ audiowrite("output_signal.wav", out, fs);
 
 <br>
 
-For further information regarding refer the report
+For further information regarding the project refer to the `report/PROJECT REPORT.pdf`
+
+<br>
+
+
+## Acknowledgments
+
+I would like to express our gratitude to _**Dr. A. Manikandan**_ for supervising and guiding this research project.
