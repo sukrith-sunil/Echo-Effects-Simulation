@@ -35,3 +35,82 @@ Moreover, a listening test is conducted to evaluate the fidelity and realism of 
 ## Abstract 
 
 This research explores the simulation of environmental echo effects on audio signals using digital filters. The focus is on understanding the impact of mountainous areas on sound propagation and reverberation effects. The study employs Finite Impulse Response (FIR) and Infinite Impulse Response (IIR) filters to replicate echoes produced in mountain ranges. Specific parameters guide the filter design methodology, incorporating delay and attenuation calculations. MATLAB implements the filters, using "countdownfrom.mp3" as input. Results are rigorously analyzed and compared with the original audio to validate simulated echoes. A listening test assesses fidelity and realism. This research enhances our knowledge of audio signal processing, offering insights into echo generation and perception in various physical settings, with implications for acoustic design and immersive virtual reality audio experiences.
+
+<br>
+
+## Source Code
+
+```
+% FIR  Filter
+
+clear var
+close all
+clc
+
+% Read audio signal
+
+[x,fs] = audioread("countdown.mp3"); 
+
+% Define the parameters
+Td = 0.1;                         % time delay in seconds
+Nd = round(fs * Td);       % Delay length in samples
+G = 0.7;                          % Feedback gain
+
+
+% Generate the impulse response
+n=1:10;
+h=[1 zeros(1,10*Nd -1)];
+h(n.*Nd)=G.^n;
+
+
+% Plot the input and output signals
+
+out = conv(x, h);                  % Applying the  filter
+t = (0:length(x)-1) / fs;
+
+figure;
+subplot(2, 1, 1);
+plot(t, x);                                 % Plot the input
+xlabel('Time (s)');
+ylabel('Amplitude');
+title('Input Signal');
+
+subplot(2,1,2)
+plot(t, out(1:length(t)));              % Plot the output
+xlabel('Time (s)');
+ylabel('Amplitude');
+title('Reverbed Signal (FIR)');
+
+
+% Impuls Response
+
+y2=[1 zeros(1,fs-1)];
+t = (0:length(y2)-1) / fs;
+y = conv(y2, h);
+plot(t, y(1:length(t)));      % Plot Impuls Response
+xlabel('Time (s)');
+ylabel('Amplitude');
+title('Impulse Response (FIR)');
+
+%frequency response
+B = h;
+A= [1];
+TF=tf(B,A);
+freqz(B,A)                      % Plot Normalized Frequecy Response
+figure
+freqz(B,A,512,"whole",fs)
+
+%Poles and zero
+figure
+pzmap(TF)                      % Plot Poles and Zeroes
+
+
+% Save the output signal as a WAV file
+
+audiowrite("output_signal.wav", out, fs);
+
+```
+
+<br>
+
+For further information regarding refer the report
